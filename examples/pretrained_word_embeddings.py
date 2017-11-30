@@ -53,7 +53,7 @@ print('Processing text dataset')
 
 texts = []  # list of text samples
 labels_index = {}  # dictionary mapping label name to numeric id
-labels = []  # list of label ids
+raw_labels = []  # list of label ids
 for name in sorted(os.listdir(TEXT_DATA_DIR)):
     path = os.path.join(TEXT_DATA_DIR, name)
     if os.path.isdir(path):
@@ -72,7 +72,7 @@ for name in sorted(os.listdir(TEXT_DATA_DIR)):
                     t = t[i:]
                 texts.append(t)
                 f.close()
-                labels.append(label_id)
+                raw_labels.append(label_id)
 
 print('Found %s texts.' % len(texts))
 
@@ -86,7 +86,7 @@ print('Found %s unique tokens.' % len(word_index))
 
 data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH)
 
-labels = to_categorical(np.asarray(labels))
+labels = to_categorical(np.asarray(raw_labels), len(labels_index))
 print('Shape of data tensor:', data.shape)
 print('Shape of label tensor:', labels.shape)
 
